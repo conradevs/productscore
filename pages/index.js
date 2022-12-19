@@ -1,9 +1,16 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import Layout from '../components/layout/Layout';
+import styled from '@emotion/styled';
 
-export default function Home() {
-  return (
-    <h1>Init</h1>
-  )
-}
+const Heading = styled.h1`
+  color: red;
+`
+
+const Home = () => (
+  <>
+    <Layout>
+      <Heading>Init</Heading>
+    </Layout>
+  </>
+)
+
+export default Home
