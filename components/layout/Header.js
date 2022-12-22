@@ -1,9 +1,12 @@
+/** @jsxRuntime classic */
+/** @jsx jsx */
 import React from 'react';
-import Search from '../ui/Search';
-import Navbar from './Navbar';
 import Link from 'next/link';
 import styled from '@emotion/styled';
-import {css} from '@emotion/react';
+import {css,jsx} from '@emotion/react';
+import Search from '../ui/Search';
+import Navbar from './Navbar';
+import Button from '../ui/Button';
 
 const HeaderContainer = styled.div`
     max-width: 1200px;
@@ -25,26 +28,59 @@ const Logo = styled.p`
 `;
  
 const Header = () => {
+
+    const loggedIn = true;
     return ( 
         <header
             css={css`
-                border-bottom: 2px solid var(--gray3);
+                border-bottom: 2px solid var(--grey3);
                 padding: 1rem 0;
             `}
         >
             <HeaderContainer>
-                <div>
+                <div
+                    css={css`
+                        display: flex;
+                        align-items: center;
+                    `}
+                >
                     <Link href="/">
                         <Logo>P</Logo>
                     </Link>
                     <Search/>
                     <Navbar/>
                 </div>
-                <div>
-                    <p>Hi: John</p>
-                    <button type="button">Log Out</button>
-                    <Link href="/">Login</Link>
-                    <Link href="/">Sign in</Link>
+                <div
+                    css={css`
+                        display: flex;
+                        align-items: center;
+                    `}
+                >   
+                    {loggedIn? (
+                            <> 
+                                <p
+                                css={css`
+                                    margin-right: 2rem;
+                                `}
+                                >          
+                                    Hi: John</p>
+                                <Button
+                                    bgColor= "true"
+                                >Log Out</Button>    
+                            </>
+                        ) : (
+                            <>  
+                                <Link href="/">
+                                    <Button
+                                        bgColor= "true"
+                                >Login</Button>
+                                </Link>
+                                <Link href="/">
+                                    <Button>Sign in</Button>
+                                </Link>
+                            </>
+                        )
+                    }
                 </div>
             </HeaderContainer>
         </header> 
