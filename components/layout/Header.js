@@ -70,12 +70,12 @@ const Header = () => {
                             </>
                         ) : (
                             <>  
-                                <Link href="/">
+                                <Link href="/login">
                                     <Button
                                         bgColor= "true"
                                 >Login</Button>
                                 </Link>
-                                <Link href="/">
+                                <Link href="/create-account">
                                     <Button>Sign in</Button>
                                 </Link>
                             </>
