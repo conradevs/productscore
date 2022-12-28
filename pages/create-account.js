@@ -1,10 +1,12 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import React from 'react'
+import React, {useState} from 'react'
 import {css, jsx} from '@emotion/react'
+import Router from 'next/router'
 import Layout from '../components/layout/Layout';
-import styled from '@emotion/styled';
 import {Form, Field, InputSubmit, Error,handleBlur} from '../components/ui/Form';
+
+import fb from '../firebase';
 
 //validations
 import useValidation from '../hooks/useValidation';
@@ -13,14 +15,22 @@ import validateNewAccount from '../validation/validateNewAccount';
 const INIT_STATE = {name: '', email: '', password:''}
 
 const CreateAccount = () => {
+  const [error,saveError] = useState(false);
 
   const {values,errors,handleSubmit,handleChange} = useValidation(INIT_STATE,validateNewAccount,createnewAccount)
 
   const {name, email, password} = values;
 
 
-  function createnewAccount() {
-    console.log('Creating new account...')
+  async function createnewAccount() {
+    try {
+      await fb.createUser(name, email, password)
+      Router.push('/');
+    }
+      catch(error) {
+        console.error('There was some error creating your user', error.message);
+        saveError(error.message)
+      }
   }
 
   return(
@@ -75,6 +85,7 @@ const CreateAccount = () => {
             />
           </Field>
           {errors.password && <Error>{errors.password}</Error>}
+          {error && <Error>{error}</Error>}
           <InputSubmit
             type="submit"
             value="Create your account"
