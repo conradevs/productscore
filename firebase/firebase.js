@@ -1,5 +1,8 @@
 import firebase, { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword , updateProfile} from "firebase/auth";
+import { getAuth,
+    createUserWithEmailAndPassword,
+    updateProfile,
+    signInWithEmailAndPassword} from "firebase/auth";
 import firebaseConfig from './config';
 
 
@@ -21,6 +24,10 @@ class Firebase {
         }).catch((error) => {
             console.log('Error seting user name: ',error.message)
         });
+    }
+    // User login
+    async login(email,password) {
+        return signInWithEmailAndPassword(this.auth,email,password);
     }
 }
 

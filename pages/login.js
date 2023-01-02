@@ -22,8 +22,13 @@ const Login = () => {
   const {email, password} = values;
 
 
-  function loginSubmit () {
-    console.log('Loading user preferences')
+  async function loginSubmit () {
+    try {
+     await firebase.login(email,password);
+     Router.push('/');
+    } catch (error) {
+      saveError(error.message);
+    }
   }
 
   return(
