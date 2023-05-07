@@ -3,8 +3,9 @@ import { getAuth,
     createUserWithEmailAndPassword,
     updateProfile,
     signInWithEmailAndPassword} from "firebase/auth";
-import firebaseConfig from './config';
 
+import {getFirestore, collection, addDoc} from 'firebase/firestore';
+import firebaseConfig from './config';
 
 class Firebase {
         // firebase handler class constructor
@@ -12,9 +13,10 @@ class Firebase {
         // initializate & get auth
         this.app = initializeApp(firebaseConfig);
         this.auth = getAuth(this.app);
+        this.db = getFirestore(this.app);
     }
     // create new user
-    createUser = async (name,email,password) => {
+    async createUser(name,email,password) {
         const newUser = await createUserWithEmailAndPassword(this.auth,email,password)
         updateProfile(this.auth.currentUser, {
             displayName: name
@@ -28,6 +30,19 @@ class Firebase {
     // User login
     async login(email,password) {
         return signInWithEmailAndPassword(this.auth,email,password);
+    }
+    // Close user session
+    async logOut() {
+        await this.auth.signOut();
+    }
+
+    async addProduct(item) {
+        try {
+            const docRef = await addDoc(collection(this.db, 'products'), item);
+            console.log("Document written with ID: ", docRef.id);
+          } catch (error) {
+            console.error("Error adding document: ", error);
+          }
     }
 }
 

@@ -6,7 +6,7 @@ import Router from 'next/router'
 import Layout from '../components/layout/Layout';
 import {Form, Field, InputSubmit, Error,handleBlur} from '../components/ui/Form';
 
-import fb from '../firebase';
+import firebase from '../firebase';
 
 //validations
 import useValidation from '../hooks/useValidation';
@@ -27,6 +27,7 @@ const Login = () => {
      await firebase.login(email,password);
      Router.push('/');
     } catch (error) {
+      console.log('There was an autentication error', error.message);
       saveError(error.message);
     }
   }
