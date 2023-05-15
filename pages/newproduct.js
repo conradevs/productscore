@@ -1,8 +1,9 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import React, {useState, useContext} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import {css, jsx} from '@emotion/react'
-import Router, {useRouter} from 'next/router'
+import Router, {useRouter} from 'next/router';
+import FileUploader from 'react-firebase-file-uploader'
 import Layout from '../components/layout/Layout';
 import {Form, Field, InputSubmit, Error,handleBlur} from '../components/ui/Form';
 import styled from '@emotion/styled';
@@ -26,8 +27,15 @@ const Heading = styled.h1`
 `
 
 const NewProduct = () => {
-  const [error,saveError] = useState(false);
 
+  //images state
+  const [imageName,saveImageName] = useState('');
+  const [uploading, saveUploading] = useState(false);
+  const [progress, saveProgress] = useState(0);
+  const [urlImage, saveUrlImage] = useState ('');
+  
+  const [error,saveError] = useState(false);
+  
   const {values,errors,handleSubmit,handleChange} = useValidation(INIT_STATE,validateNewProduct,createNewProduct);
 
   const {name, company, image, url, description} = values;
@@ -104,19 +112,24 @@ const NewProduct = () => {
             </Field>
             {errors.company && <Error>{errors.company}</Error>}
 
-            {/*<Field>
+            <Field>
               <label htmlFor="image">Image</label>
-              <input
-                type="file"
+              <FileUploader
+                accept="image/*"
                 id="image"
                 name="image"
                 value={image}
                 onChange={handleChange}
                 onBlur = {handleBlur}
+                storageRef = {firebase.storage.ref("products")}
+                onUploadStart = {handleUploadStart}
+                onUploadError = {handleUploadError}
+                onUploadSuccess = {handleUploadSuccess}
+                onProgress = {handleProgress}
               />
             </Field>
             {errors.image && <Error>{errors.image}</Error>}
-            */}
+            
             <Field>
               <label htmlFor="url">URL</label>
               <input
