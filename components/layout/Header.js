@@ -1,6 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import React from 'react';
+import React, {useEffect} from 'react';
 import Link from 'next/link';
 import styled from '@emotion/styled';
 import {css,jsx} from '@emotion/react';
@@ -30,6 +30,7 @@ const Logo = styled.p`
 const Header = () => {
 
     const loggedIn = true;
+
     return ( 
         <header
             css={css`
@@ -56,7 +57,7 @@ const Header = () => {
                         align-items: center;
                     `}
                 >   
-                    {loggedIn? (
+                    {loggedIn ? (
                             <> 
                                 <p
                                 css={css`
