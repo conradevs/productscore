@@ -7,8 +7,9 @@ import FileUploader from 'react-firebase-file-uploader'
 import Layout from '../components/layout/Layout';
 import {Form, Field, InputSubmit, Error,handleBlur} from '../components/ui/Form';
 import styled from '@emotion/styled';
-import {FirebaseContext} from '../firebase';
 
+import FirebaseContext from "../firebase/context"
+import { getStorage, ref } from "firebase/storage";
 //validations
 import useValidation from '../hooks/useValidation';
 
@@ -17,7 +18,7 @@ import validateNewProduct from '../validation/validateNewProduct';
 const INIT_STATE = {
   name: '',
   company: '',
-  //image:'',
+  image:'',
   url: '',
   description:''
 }
@@ -29,7 +30,8 @@ const Heading = styled.h1`
 const NewProduct = () => {
 
   //images state
-  const [imageName,saveImageName] = useState('');
+  const [imageObj, saveImageObj] = useState(null)
+  const [imageName, saveImageName] = useState('');
   const [uploading, saveUploading] = useState(false);
   const [progress, saveProgress] = useState(0);
   const [urlImage, saveUrlImage] = useState ('');
@@ -41,20 +43,30 @@ const NewProduct = () => {
   const {name, company, image, url, description} = values;
 
   // Routing hook for redirecting
-
+  const router = useRouter();
   // context with crud operations from firebase
   const {user, firebase} = useContext(FirebaseContext);
+
+  const handleUploadProductImage = (img,productRefId)=> {
+    try {
+      return firebase.uploadProductImage(img,productRefId);
+    } catch (error) {
+      handleUploadError(error);
+    }
+  }
 
   async function createNewProduct() {
     // if user not autenticated
     if (!user) {
       return Router.push('/login');
     }
+
     // create new product object
-    const product = {
+    let product = {
       name,
       company,
       url,
+      image: '',
       description,
       votes: 0,
       comments: [],
@@ -62,9 +74,21 @@ const NewProduct = () => {
     }
 
     // insert product in firestore database
-    const newProductRef = await firebase.addProduct(product);
-    //console.log('new product created with id ', newProductRef.id)
+    const newProductRefId = await firebase.addProduct(product);
+    // upload image after uploading new product
+    handleUploadProductImage(imageObj,newProductRefId)
   }
+  // get reference to product images storage in firestore
+
+  const handleUploadStart = () => {
+    saveProgress(0);
+    saveUploading(true);
+  };
+  const handleUploadError = error => {
+    saveUploading(error);
+    console.log(error);
+  };
+  
 
   return(
   <div>
@@ -89,7 +113,7 @@ const NewProduct = () => {
               <input
                 type="text"
                 id="name"
-                placeholder='Your name'
+                placeholder='Name your product'
                 name="name"
                 value={name}
                 onChange={handleChange}
@@ -114,21 +138,11 @@ const NewProduct = () => {
 
             <Field>
               <label htmlFor="image">Image</label>
-              <FileUploader
-                accept="image/*"
-                id="image"
-                name="image"
-                value={image}
-                onChange={handleChange}
-                onBlur = {handleBlur}
-                storageRef = {firebase.storage.ref("products")}
-                onUploadStart = {handleUploadStart}
-                onUploadError = {handleUploadError}
-                onUploadSuccess = {handleUploadSuccess}
-                onProgress = {handleProgress}
+              <input
+                type="file"
+                onChange={e => saveImageObj(e.target.files[0])}
               />
             </Field>
-            {errors.image && <Error>{errors.image}</Error>}
             
             <Field>
               <label htmlFor="url">URL</label>
