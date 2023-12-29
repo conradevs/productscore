@@ -37,3 +37,6 @@ next-env.d.ts
 
 # firebase auth info
 /firebase/config.js
+
+# node modules
+/node_modules

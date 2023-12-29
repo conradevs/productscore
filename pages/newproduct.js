@@ -73,10 +73,9 @@ const NewProduct = () => {
       creationDate: Date.now()
     }
 
-    // insert product in firestore database
-    const newProductRefId = await firebase.addProduct(product);
-    // upload image after uploading new product
-    handleUploadProductImage(imageObj,newProductRefId)
+    // insert product in firestore database and its image in storage
+    await firebase.addProductWithImage(product,imageObj);
+    return Router.push('/')
   }
   // get reference to product images storage in firestore
 
