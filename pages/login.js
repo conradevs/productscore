@@ -74,8 +74,7 @@ const Login = () => {
           {error && <Error>{error}</Error>}
           <InputSubmit
             type="submit"
-            value="Login" 
-          />
+          >Login</InputSubmit>
         </Form>
       </>
     </Layout>

@@ -72,8 +72,6 @@ class Firebase {
         querySnapshot.forEach((doc) => {
             products = [...products,{id: doc.id,data: doc.data()}]
         });
-        products.sort((p1,p2) => (p1.data.creationDate<p2.data.creationDate) ? p1 : p2);
-
         return products;
     }
     async uploadProductImage (file,productRefId) {

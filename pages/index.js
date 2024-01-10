@@ -1,37 +1,11 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React from 'react'
 import Layout from '../components/layout/Layout';
-import styled from '@emotion/styled';
-import {FirebaseContext} from '../firebase'
 import ProductDetails from '../components/layout/ProductDetails';
-
-const Heading = styled.h1`
-  color: red;
-`
+import useProducts from '../hooks/useProducts';
 
 const Home = () => {
   
-  const [products, saveProducts] = useState([]);
-
-  const {firebase} = useContext(FirebaseContext);
-
-  function manageSnapshot(snapshot) {
-    const products = snapshot.docs.map(doc => {
-
-      return {
-        id: doc.id,
-        ...doc.data()
-      }
-    }
-    )
-  }
-
-  useEffect(() => {
-    const getProducts = async () => {
-      const getproducts = await firebase.getProductsCollection()    
-      saveProducts(getproducts)
-    }
-    getProducts();
-  },[])
+  const {products} = useProducts('creationDate');
 
   return(
     <>

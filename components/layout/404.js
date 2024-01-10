@@ -9,7 +9,7 @@ const Error404 = () => {
             margin-top: 5rem;
             text-align: center;
         `}
-    >Product not found</h1> );
+    >Page not found</h1> );
 }
  
 export default Error404;

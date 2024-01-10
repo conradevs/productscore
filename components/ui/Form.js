@@ -34,7 +34,7 @@ export const Field = styled.div`
     }
 `;
 
-export const InputSubmit = styled.input`
+export const InputSubmit = styled.button`
     background-color: var(--orange);
     width: 100%;
     padding: 1.5rem;
@@ -45,7 +45,7 @@ export const InputSubmit = styled.input`
     border: none;
     font-family: 'PT Sans', sans-serif;
     font-weight: 700;
-
+    margin: 1rem;
     &:hover {
         cursor: pointer;
     }

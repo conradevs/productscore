@@ -88,8 +88,9 @@ const CreateAccount = () => {
           {error && <Error>{error}</Error>}
           <InputSubmit
             type="submit"
-            value="Create your account"
-          />
+          >
+            Create your account
+          </InputSubmit>
         </Form>
       </>
     </Layout>
