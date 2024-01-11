@@ -36,7 +36,6 @@ const Product = () => {
             const getProduct = async () => {
                 const docRef = doc(firebase.db, "products", id);
                 const docSnap = await getDoc(docRef);
-                console.log(docSnap.data())
                 if(docSnap.exists()) {
                     useProduct(docSnap.data())
                 } else {
@@ -57,7 +56,6 @@ const Product = () => {
         if(!user) {
             return router.push('/login')
         }
-        console.log(product)
         // verify user didn't vote already
         if(voted.includes(user.uid)) return
 
@@ -120,7 +118,6 @@ const Product = () => {
 
     // check if post creator is the same that is in current session
     const canDelete = () => {
-        console.log(creator)
         if(!user) return false;
         if(creator.id === user.uid) {
             return true;

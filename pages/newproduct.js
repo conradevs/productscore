@@ -49,16 +49,6 @@ const NewProduct = () => {
   // context with crud operations from firebase
   const {user, firebase} = useContext(FirebaseContext);
 
-  console.log(user);
-
-  const handleUploadProductImage = (img,productRefId)=> {
-    try {
-      return firebase.uploadProductImage(img,productRefId);
-    } catch (error) {
-      handleUploadError(error);
-    }
-  }
-
   async function createNewProduct() {
     // if user not autenticated
     if (!user) {
@@ -88,10 +78,6 @@ const NewProduct = () => {
   }
   // get reference to product images storage in firestore
 
-  const handleUploadStart = () => {
-    saveProgress(0);
-    saveUploading(true);
-  };
   const handleUploadError = error => {
     saveUploading(error);
     console.log(error);
