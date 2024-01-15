@@ -1,17 +1,29 @@
 import React from 'react'
 import Layout from '../components/layout/Layout';
-import styled from '@emotion/styled';
+import ProductDetails from '../components/layout/ProductDetails';
+import useProducts from '../hooks/useProducts';
 
-const Heading = styled.h1`
-  color: red;
-`
+const Home = () => {
+  
+  const {products} = useProducts('creationDate');
 
-const Home = () => (
-  <>
-    <Layout>
-      <Heading>Init</Heading>
-    </Layout>
-  </>
-)
+  return(
+    <>
+      <Layout>
+        <div className='products_list'>
+          <div className='container'>
+            <div className='bg-white'></div>
+            {products.map(product =>(
+              <ProductDetails
+                key={product.id}
+                product={product}
+              />
+            ))}
+          </div>
+        </div>
+      </Layout>
+    </>
+  )
+}
 
 export default Home
